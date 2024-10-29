@@ -20,7 +20,8 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const uri = 'mongodb+srv://abdur220103:chat@10-2024@chatbotusers.k69gq.mongodb.net/chatbotUsers?retryWrites=true&w=majority';
+//const uri = 'mongodb+srv://abdur220103:chat@10-2024@chatbotusers.k69gq.mongodb.net/chatbotUsers?retryWrites=true&w=majority';
+const uri='abdur220103:chat@10-2024@chatbotusers-shard-00-00.k69gq.mongodb.net:27017,chatbotusers-shard-00-01.k69gq.mongodb.net:27017,chatbotusers-shard-00-02.k69gq.mongodb.net:27017/?ssl=true&replicaSet=atlas-tq4hcm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=chatbotusers'
 // Database connection
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected!'))
