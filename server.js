@@ -35,9 +35,14 @@ app.get('/', (req, res) => {
   res.send("Welcome to FSL Chatbot");
 });
 
-// Webhook endpoint for Dialogflow
 app.post('/webhook', (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
+  const message = req.body.message;
+  const parameters = req.body.parameters || {};
+
+  // Use message and parameters as needed
+});
+
 
   // Intent handlers
   const handleTrackService = (agent) => {
