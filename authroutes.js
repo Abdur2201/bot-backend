@@ -3,26 +3,28 @@ import bcrypt from 'bcryptjs';
 import User from './users.js'; 
 const router = express.Router();
 
-//signup
-router.post('/signup',async (req,res)=>{
-    const {email,name,password}=req.body;
+// Signup Route
+router.post('/signup', async (req, res) => {
+    const { email, name, password } = req.body;
 
-    try
-    {
-        const alreadyexist=await user.findOne({email});
-        if(alreadyexist)
-        {
-            return res.status(400).json({message:"Email ID already exist!"});
+    try {
+        // Check if the user already exists
+        const alreadyexist = await user.findOne({ email });
+        if (alreadyexist) {
+            return res.status(400).json({ message: "Email ID already exists!" });
         }
+        
+        // Hash the password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newuser=new user({email,name,password:hashedPassword});
+        
+        // Create a new user
+        const newuser = new user({ email, name, password: hashedPassword });
         await newuser.save();
 
-        return res.status(200).json({message:"User created successfully",userID:newuser.id})
-    } catch(error)
-    {
-        return res.status(500).json({message:"Error occured"})
+        return res.status(200).json({ message: "User created successfully", userID: newuser.id });
+    } catch (error) {
+        return res.status(500).json({ message: "Error occurred" });
     }
 });
 
