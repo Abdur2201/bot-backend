@@ -9,21 +9,18 @@ router.post('/signup', async (req, res) => {
 
     try {
         // Check if the user already exists
-        const alreadyexist = await User.findOne({ email });
+        const alreadyexist = await User.findOne({ email }); // Use 'User' instead of 'user'
         if (alreadyexist) {
             return res.status(400).json({ message: "Email ID already exists!" });
         }
         
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        
         // Create a new user
-        const newuser = new user({ email, name, password: hashedPassword });
+        const newuser = new User({ email, name, password }); // Password is plain text here; hashing happens in the model
         await newuser.save();
 
         return res.status(200).json({ message: "User created successfully", userID: newuser.id });
     } catch (error) {
+        console.error('Error during signup:', error); // Log the error for debugging
         return res.status(500).json({ message: "Error occurred" });
     }
 });
