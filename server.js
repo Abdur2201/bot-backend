@@ -9,9 +9,11 @@ import { WebhookClient } from 'dialogflow-fulfillment'; // Import Dialogflow ful
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 10000; 
+const PORT = process.env.PORT || 10000;
+
+// Configure CORS options
 const corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:4200',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 };
@@ -20,16 +22,13 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// MongoDB connection URI with encoded special characters
 //const uri = 'mongodb+srv://abdur220103:chat@10-2024@chatbotusers.k69gq.mongodb.net/chatbotUsers?retryWrites=true&w=majority';
-//const uri='abdur220103:chat@10-2024@chatbotusers-shard-00-00.k69gq.mongodb.net:27017,chatbotusers-shard-00-01.k69gq.mongodb.net:27017,chatbotusers-shard-00-02.k69gq.mongodb.net:27017/?ssl=true&replicaSet=atlas-tq4hcm-shard-0&authSource=admin&retryWrites=true&w=majority&appName=chatbotusers'
 
 const uri = process.env.MONGODB_URI;
-
-// Database connection
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected!'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
-  
+mongoose.connect(uri)
+  .then(() => console.log('MongoDB connected!'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Basic route for testing
 app.get('/', (req, res) => {
@@ -41,53 +40,53 @@ app.post('/webhook', (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
 
   // Intent handlers
-  function handleTrackService(agent) {
-    const idNum = agent.parameters.id_num; // Parameter from Dialogflow
+  const handleTrackService = (agent) => {
+    const idNum = agent.parameters.id_num;
     if (idNum) {
       agent.add(`Your tracking number ${idNum} is in transit.`);
     } else {
       agent.add("Please provide a valid tracking number.");
     }
-  }
+  };
 
-  function handleDownloadReceipt(agent) {
-    const idNum = agent.parameters.id_num; // Adjust parameter name
+  const handleDownloadReceipt = (agent) => {
+    const idNum = agent.parameters.id_num;
     if (idNum) {
       agent.add(`Here is the download link for receipt with ID ${idNum}: www.google.com`);
     } else {
       agent.add("Please provide a valid ID number to download the receipt.");
     }
-  }
+  };
 
-  function handleCalculateCost(agent) {
+  const handleCalculateCost = (agent) => {
     const source = agent.parameters.src_name;
     const destination = agent.parameters.des_name;
     if (source && destination) {
-      const estimatedCost = calculateShippingCost(source, destination); // Call cost calculation
+      const estimatedCost = calculateShippingCost(source, destination);
       agent.add(`The estimated cost to ship from ${source} to ${destination} is $${estimatedCost}.`);
     } else {
       agent.add("Please provide both source and destination to calculate the shipping cost.");
     }
-  }
+  };
 
-  function handleOtherQueries(agent) {
-    const query = agent.parameters.query; // Adjust parameter name
+  const handleOtherQueries = (agent) => {
+    const query = agent.parameters.query;
     if (query) {
       agent.add(`For "${query}", please contact our customer support for further assistance.`);
     } else {
       agent.add("Please provide more details about your query.");
     }
-  }
+  };
 
   // Helper function to calculate cost
-  function calculateShippingCost(source, destination) {
+  const calculateShippingCost = (source, destination) => {
     const baseRate = 5;
     const distanceFactor = 2;
-    return baseRate + (destination.length - source.length) * distanceFactor;
-  }
+    return baseRate + Math.abs(destination.length - source.length) * distanceFactor;
+  };
 
   // Map Dialogflow intents to handlers
-  let intentMap = new Map();
+  const intentMap = new Map();
   intentMap.set('Track', handleTrackService);
   intentMap.set('download', handleDownloadReceipt);
   intentMap.set('estimation', handleCalculateCost);
@@ -102,9 +101,8 @@ app.use('/auth', authroutes);
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
 
 
 
