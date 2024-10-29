@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import user from './users.js'; // Adjusted the path
+import User from './users.js'; 
 const router = express.Router();
 
 //signup
@@ -28,29 +28,30 @@ router.post('/signup',async (req,res)=>{
 
 //login
 router.post('/login', async (req, res) => {
-    console.log('Login attempt with:', req.body);  // Log the incoming request data
+    console.log('Login attempt with:', req.body);
     const { email, password } = req.body;
-  
+
     try {
-      const user = await user.findOne({ email });
-      if (!user) {
-        console.log('User not found:', email);
-        return res.status(400).json({ message: "User doesn't exist" });
-      }
-  
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        console.log('Password mismatch for:', email);
-        return res.status(400).json({ message: "Invalid email or password" });
-      }
-  
-      console.log('Login successful for:', email);
-      return res.status(200).json({ message: 'Welcome', userID: user.id });
+        const user = await User.findOne({ email }); // Change 'user' to 'User'
+        if (!user) {
+            console.log('User not found:', email);
+            return res.status(400).json({ message: "User doesn't exist" });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            console.log('Password mismatch for:', email);
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        console.log('Login successful for:', email);
+        return res.status(200).json({ message: 'Welcome', userID: user.id });
     } catch (error) {
-      console.error('Error during login:', error);
-      return res.status(500).json({ message: 'Error occurred during login' });
+        console.error('Error during login:', error);
+        return res.status(500).json({ message: 'Error occurred during login', error: error.message });
     }
-  });
+});
+
   
 
 
