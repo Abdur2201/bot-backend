@@ -39,7 +39,7 @@ app.post('/webhook', (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
   const message = req.body.message;
   const parameters = req.body.parameters || {};
-
+  console.log('Webhook connected')
   // Use message and parameters as needed
 });
 
