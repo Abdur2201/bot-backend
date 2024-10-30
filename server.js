@@ -78,6 +78,12 @@ app.post('/webhook', (req, res) => {
       agent.add("Please provide more details about your query.");
     }
   };
+  const handleUnknownIntent = (agent) => {
+  agent.add("I'm not sure how to handle that request.");
+  console.warn(`No handler for intent: ${agent.intent}`);
+};
+  // Add unknown intent fallback
+intentMap.set('Default Fallback Intent', handleUnknownIntent);
 
   // Helper function to calculate cost
   const calculateShippingCost = (source, destination) => {
@@ -92,7 +98,7 @@ app.post('/webhook', (req, res) => {
   intentMap.set('download', handleDownloadReceipt);
   intentMap.set('estimation', handleCalculateCost);
   intentMap.set('others', handleOtherQueries);
-
+  
   // Handle the request with intentMap
   agent.handleRequest(intentMap);
 });
