@@ -23,8 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB connection URI with encoded special characters
-//const uri = 'mongodb+srv://abdur220103:chat@10-2024@chatbotusers.k69gq.mongodb.net/chatbotUsers?retryWrites=true&w=majority';
-
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected!'))
@@ -35,14 +33,12 @@ app.get('/', (req, res) => {
   res.send("Welcome to FSL Chatbot");
 });
 
+// Webhook route for Dialogflow
 app.post('/webhook', (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
   const message = req.body.message;
   const parameters = req.body.parameters || {};
-  console.log('Webhook connected')
-  // Use message and parameters as needed
-});
-
+  console.log('Webhook connected');
 
   // Intent handlers
   const handleTrackService = (agent) => {
@@ -97,7 +93,7 @@ app.post('/webhook', (req, res) => {
   intentMap.set('estimation', handleCalculateCost);
   intentMap.set('others', handleOtherQueries);
 
-  // Handle the request
+  // Handle the request with intentMap
   agent.handleRequest(intentMap);
 });
 
@@ -108,6 +104,7 @@ app.use('/auth', authroutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
