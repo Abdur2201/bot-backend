@@ -83,6 +83,12 @@ app.post('/webhook', (req, res) => {
   console.warn(`No handler for intent: ${agent.intent}`);
 };
 
+  const handleFallback = (agent) => {
+  const intent = agent.intent; // Retrieve the unmatched intent name
+  console.log(`Unhandled intent: ${intent}`); // Log the unmatched intent
+  agent.add("I'm not sure how to handle that request.");
+};
+
   // Helper function to calculate cost
   const calculateShippingCost = (source, destination) => {
     const baseRate = 5;
@@ -97,6 +103,7 @@ app.post('/webhook', (req, res) => {
   intentMap.set('estimation', handleCalculateCost);
   intentMap.set('others', handleOtherQueries);
   intentMap.set('Default Fallback Intent', handleUnknownIntent); 
+  intentMap.set(null, handleFallback);
   // Handle the request with intentMap
   agent.handleRequest(intentMap);
 });
