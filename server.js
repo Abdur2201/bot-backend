@@ -94,10 +94,10 @@ app.post('/webhook', (req, res) => {
     const baseRate = 10; 
     const distanceFactor = 5; 
     const regionDistances = {
-      "chennai": 0,     
-      "miami": 10, 
-      "dubai": 5,     
-      "mumbai": 15 
+      "chennai": 30,     
+      "miami": 90, 
+      "dubai": 53,     
+      "mumbai": 154 
     };
     const sourceDistance = regionDistances[source] || 0; 
     const destinationDistance = regionDistances[destination] || 0;
