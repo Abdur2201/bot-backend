@@ -59,7 +59,7 @@ app.post('/webhook', (req, res) => {
   const handleDownloadReceipt = (agent) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
-      agent.add(`Here is the download link for receipt with ID ${currentUserId}: www.google.com`);
+      agent.add(`Here is the download link for receipt with ID ${userId}: www.google.com`);
     } else {
       agent.add("Please provide a valid ID number to download the receipt.");
     }
