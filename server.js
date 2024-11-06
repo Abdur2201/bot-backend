@@ -91,9 +91,20 @@ app.post('/webhook', (req, res) => {
 
   // Helper function to calculate cost
   const calculateShippingCost = (source, destination) => {
-    const baseRate = 5;
-    const distanceFactor = 2;
-    return baseRate + Math.abs(destination.length - source.length) * distanceFactor;
+    const baseRate = 10; 
+    const distanceFactor = 5; 
+    const regionDistances = {
+      "chennai": 0,     
+      "miami": 10, 
+      "dubai": 5,     
+      "mumbai": 15 
+    };
+    const sourceDistance = regionDistances[source] || 0; 
+    const destinationDistance = regionDistances[destination] || 0;
+    
+    const distance = Math.abs(destinationDistance - sourceDistance)
+    const totalCost = baseRate + (distance * distanceFactor);
+    return totalCost;
   };
 
   // Map Dialogflow intents to handlers
