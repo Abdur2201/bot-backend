@@ -39,16 +39,18 @@ app.get('/', (req, res) => {
 app.post('/webhook', (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
 
-  const getCurrentUserId = () => {
-    const userId = req.headers['user-id'] || null;
-    return userId;
-  };
+  const userId = req.headers['user-id'];  // Retrieve user ID from header
+  // Check if user ID is provided
+  if (!userId) {
+    res.status(400).send('User ID is required.');
+    return;
+  }
   const currentUserId = getCurrentUserId();
   // Intent handlers
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
-      agent.add(`Your tracking number ${currentUserId} is in transit.`);
+      agent.add(`Your tracking number ${userId} is in transit.`);
     } else {
       agent.add("Please provide a valid tracking number.");
     }
