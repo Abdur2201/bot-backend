@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 10000;
 const corsOptions = {
   origin: 'http://localhost:4200',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type','user-id],
 };
 
 app.use(cors(corsOptions));
