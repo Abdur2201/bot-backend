@@ -41,15 +41,7 @@ app.post('/webhook', (req, res) => {
   const parameters = req.body.parameters || {};
   console.log('Webhook connected');
 
-  app.post('/auth/display-user-id', (req, res) => {
-  const { userId } = req.body;
-  if (userId) {
-    console.log(`User ID received: ${userId}`);
-    res.status(200).send(`User ID displayed: ${userId}`);
-  } else {
-    res.status(400).send("User ID is missing.");
-  }
-});
+  
   // Intent handlers
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
@@ -131,7 +123,15 @@ app.post('/webhook', (req, res) => {
 
 // Routing to authroutes
 app.use('/auth', authroutes);
-
+app.post('/auth/display-user-id', (req, res) => {
+  const { userId } = req.body;
+  if (userId) {
+    console.log(`User ID received: ${userId}`);
+    res.status(200).send(`User ID displayed: ${userId}`);
+  } else {
+    res.status(400).send("User ID is missing.");
+  }
+});
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
