@@ -127,9 +127,9 @@ app.post('/auth/display-user-id', (req, res) => {
   const { userId } = req.body;
   if (userId) {
     console.log(`User ID received: ${userId}`);
-    res.status(200).send(`User ID displayed: ${userId}`);
+    res.status(200).json(`User ID displayed: ${userId}`);
   } else {
-    res.status(400).send("User ID is missing.");
+    res.status(400).json("User ID is missing.");
   }
 });
 // Start the server
