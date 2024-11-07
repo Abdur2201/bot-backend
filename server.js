@@ -41,11 +41,20 @@ app.post('/webhook', (req, res) => {
   const parameters = req.body.parameters || {};
   console.log('Webhook connected');
 
+  app.post('/auth/display-user-id', (req, res) => {
+  const { userId } = req.body;
+  if (userId) {
+    console.log(`User ID received: ${userId}`);
+    res.status(200).send(`User ID displayed: ${userId}`);
+  } else {
+    res.status(400).send("User ID is missing.");
+  }
+});
   // Intent handlers
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
-      agent.add(`Your tracking number ${idNum} is in transit.`);
+      agent.add(`Your tracking number ${userId} is in transit.`);
     } else {
       agent.add("Please provide a valid tracking number.");
     }
@@ -54,7 +63,7 @@ app.post('/webhook', (req, res) => {
   const handleDownloadReceipt = (agent) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
-      agent.add(`Here is the download link for receipt with ID ${idNum}: www.google.com`);
+      agent.add(`Here is the download link for receipt with ID ${userId}: www.google.com`);
     } else {
       agent.add("Please provide a valid ID number to download the receipt.");
     }
@@ -171,12 +180,15 @@ app.listen(PORT, () => {
 // app.post('/webhook', (req, res) => {
 //   const agent = new WebhookClient({ request: req, response: res });
 
-//   const userId = req.headers['user-id'];  // Retrieve user ID from header
-//   // Check if user ID is provided
-//   if (!userId) {
-//     res.status(400).send('User ID is required.');
-//     return;
+// app.post('/auth/display-user-id', (req, res) => {
+//   const { userId } = req.body;
+//   if (userId) {
+//     console.log(`User ID received: ${userId}`);
+//     res.status(200).send(`User ID displayed: ${userId}`);
+//   } else {
+//     res.status(400).send("User ID is missing.");
 //   }
+// });
 //   const currentUserId = getCurrentUserId();
 //   // Intent handlers
 //   const handleTrackService = (agent) => {
