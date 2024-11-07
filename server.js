@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', (req, res) => {
+  console.log('Headers received:', req.headers);  // Log all headers to check for 'user-id'
   const agent = new WebhookClient({ request: req, response: res });
   const userId = req.headers['user-id'];  // Retrieve userId from headers
   console.log('Webhook connected, user ID:', userId);
