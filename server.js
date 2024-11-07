@@ -115,6 +115,7 @@ app.use('/auth', authroutes);
 
 app.post('/auth/display-user-id', (req, res) => {
   const { userId } = req.body;
+  console.log(`userID:${userId}`);
   if (userId) {
     console.log(`User ID received: ${userId}`);
     res.status(200).json(`User ID displayed: ${userId}`);
