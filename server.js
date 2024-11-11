@@ -36,23 +36,6 @@ app.post('/webhook', (req, res) => {
   const userId = req.headers['user-id'];  // Retrieve userId from headers
   console.log('Webhook connected, user ID:', userId);
 
-  if (!userId) {
-    console.log("User ID missing from request headers. Attempting to retrieve from query params.");
-    // Check if userId is in the body (if Dialogflow passes it differently)
-    const { queryResult } = req.body;
-    if (queryResult && queryResult.parameters) {
-      userId = queryResult.parameters.userId || userId;  // Attempt to retrieve from parameters
-    }
-  }
-
-  // If the userId is still undefined, log the error and respond accordingly
-  if (!userId) {
-    console.error("User ID not found. Responding with an error.");
-    return res.status(400).json({ message: 'User ID missing from the request' });
-  }
-
-  console.log('Using User ID:', userId);
-
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
