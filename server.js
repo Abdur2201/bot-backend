@@ -114,6 +114,10 @@ app.post('/webhook', (req, res) => {
 app.use('/auth', authroutes);
 
 app.post('/auth/display-user-id', (req, res) => {
+
+  const userId = req.headers['user-id'];  // Retrieve the userId from headers
+  console.log('Received userId from frontend:', userId);
+  
   const { userId } = req.body;
   console.log(`userID:${userId}`);
   if (userId) {
