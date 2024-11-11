@@ -29,23 +29,17 @@ mongoose.connect(uri)
 app.get('/', (req, res) => {
   res.send("Welcome to FSL Chatbot");
 });
-//newly added!
-app.use((req, res, next) => {
-  const sessionId = req.sessionID || req.headers['session-id'];
-  if (sessionId && userSessionCache.has(sessionId)) {
-    req.headers['user-id'] = userSessionCache.get(sessionId); // Attach userId to headers
-  }
-  next();
-});
+
 
 app.post('/webhook', (req, res) => {
-  // console.log('Headers received:', req.headers);  // Log all headers to check for 'user-id'
-  // const agent = new WebhookClient({ request: req, response: res });
-  // const userId = req.headers['user-id'];  // Retrieve userId from headers
- 
-  const userId = req.headers['user-id'];
+  
+  console.log('Headers received:', req.headers);  // Log all headers to check for 'user-id'
+  const agent = new WebhookClient({ request: req, response: res });
+  const userId = req.headers['user-id'];  // Retrieve userId from headers
   console.log('Webhook connected, user ID:', userId);
 
+  // const userId = req.headers['user-id'];
+ 
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
@@ -125,30 +119,21 @@ app.use('/auth', authroutes);
 
 const userSessionCache = new Map();
 
+
 app.post('/auth/display-user-id', (req, res) => {
-  const userId = req.headers['user-id'];
-  const sessionId = req.sessionID || req.headers['session-id'];  // Use a session or unique identifier
-  if (userId && sessionId) {
-    userSessionCache.set(sessionId, userId); // Store the userId in memory cache
-    res.status(200).json({ message: `User ID stored for session ${sessionId}` });
+
+  const userId = req.headers['user-id'];  // Retrieve the userId from headers
+  console.log('Received userId from frontend:', userId);
+  
+  // const { userId } = req.body;
+  console.log(`userID:${userId}`);
+  if (userId) {
+    console.log(`User ID received: ${userId}`);
+    res.status(200).json(`User ID displayed: ${userId}`);
   } else {
-    res.status(400).json("User ID or session ID missing.");
+    res.status(400).json("User ID is missing.");
   }
 });
-// app.post('/auth/display-user-id', (req, res) => {
-
-//   const userId = req.headers['user-id'];  // Retrieve the userId from headers
-//   console.log('Received userId from frontend:', userId);
-  
-//   // const { userId } = req.body;
-//   console.log(`userID:${userId}`);
-//   if (userId) {
-//     console.log(`User ID received: ${userId}`);
-//     res.status(200).json(`User ID displayed: ${userId}`);
-//   } else {
-//     res.status(400).json("User ID is missing.");
-//   }
-// });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
