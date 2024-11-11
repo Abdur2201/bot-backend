@@ -39,7 +39,7 @@ app.post('/webhook', (req, res) => {
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
-      agent.add(`Your tracking number ${userId} is in transit.`);
+      agent.add(`Your tracking number ${idNum} is in transit.`);
     } else {
       agent.add("Please provide a valid tracking number.");
     }
