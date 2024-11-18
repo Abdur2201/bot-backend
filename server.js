@@ -83,6 +83,7 @@ app.post('/webhook', (req, res) => {
 
   const handleOtherQueries = async (agent) => {
     const query = agent.parameters.query;
+    if(query){
     const mailOptions={
       from:'internnewage@gmail.com',
       to:'internnewage@gmail.com',
@@ -100,11 +101,10 @@ app.post('/webhook', (req, res) => {
       console.log('error sending mail to our team', error);
       agent.add("Error occurred while sending your query to our customer support team.");
     }
-    // if (query) {
-    //   agent.add(`For "${query}", please contact our customer support for further assistance.`);
-    // } else {
-    //   agent.add("Please provide more details about your query.");
-    // }
+  }
+  else{
+    agent.add("Please provide more details about your query.");
+  }
   };
 
   const handleUnknownIntent = (agent) => {
