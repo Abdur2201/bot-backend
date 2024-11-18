@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "nodemailer": "^6.9.4",
     "cors": "^2.8.5",
     "@google-cloud/dialogflow": "^6.8.0",
     "axios": "^1.7.7",
