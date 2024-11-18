@@ -42,13 +42,21 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
 
-  if(req.headers)
-  {
-  console.log('Headers received:'); // Log all headers!
-  }
+  console.log("Webhook called with intent:", req.body.queryResult.intent.displayName);
+  console.log("Parameters received:", req.body.queryResult.parameters);
+  console.log("Headers:", req.headers);
+
   const agent = new WebhookClient({ request: req, response: res });
-  const userId = req.headers['user-id'];  // Retrieve userId from headers
-  console.log('Webhook connected, user ID:', userId);
+
+  const userId = req.headers['user-id'] || "unknown-user";
+  console.log("Resolved user ID:", userId);
+  // if(req.headers)
+  // {
+  // console.log('Headers received:'); // Log all headers!
+  // }
+  // const agent = new WebhookClient({ request: req, response: res });
+  // const userId = req.headers['user-id'];  // Retrieve userId from headers
+  // console.log('Webhook connected, user ID:', userId);
 
   // const userId = req.headers['user-id'];
  
