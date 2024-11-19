@@ -93,8 +93,8 @@ app.post('/webhook', (req, res) => {
     const query = agent.parameters.query;
     if(query){
     const mailOptions={
-      from:'internnewage@gmail.com',
-      to:'internnewage@gmail.com',
+      from:'abdurintern@gmail.com',
+      to:'abdurintern@gmail.com',
       subject:"New Customer's Query (High Priority)",
       text:`New query complaint has been raised using chat bot: "${query}".`
     };
