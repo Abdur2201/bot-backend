@@ -98,6 +98,7 @@ app.post('/webhook', (req, res) => {
       subject:"New Customer's Query (High Priority)",
       text:`New query complaint has been raised using chat bot: "${query}".`
     };
+      console.log(text);
     try 
     {
       await transporter.sendMail(mailOptions);
