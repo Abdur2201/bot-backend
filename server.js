@@ -31,8 +31,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const uri = process.env.MONGODB_URI;
-console.log("MongoDB URI:", process.env.MONGODB_URI);
-
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected!'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
