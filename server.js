@@ -59,7 +59,7 @@ app.post('/webhook', (req, res) => {
   // console.log('Webhook connected, user ID:', userId);
 
   // const userId = req.headers['user-id'];
- agent.add(`Hi! I'm Newage chatbot, here to assist you! How can I help? Type any of following to use: \n1.Download \n2.Track \n3.cost estimation \n4.Others(if different query)`)
+
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
