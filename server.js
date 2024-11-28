@@ -140,7 +140,6 @@ app.post('/webhook', (req, res) => {
   };
 
   const calculateShippingCost = (source, destination) => { 
-    
     const baseRate = 10; 
     const distanceFactor = 5; 
     const regionDistances = {
@@ -150,19 +149,28 @@ app.post('/webhook', (req, res) => {
         "mumbai": 154,
         "goa": 36
     };
-    const sourceDistance = regionDistances[source.toLowerCase()];
-    const destinationDistance = regionDistances[destination.toLowerCase()];
-    // Ensure both source and destination are valid
-    if (!regionDistances[source] || !regionDistances[destination]) {
-        return "Invalid source or destination";
+
+    // Convert source and destination to lowercase for consistent matching
+    const sourceKey = source.toLowerCase();
+    const destinationKey = destination.toLowerCase();
+
+    // Look up distances
+    const sourceDistance = regionDistances[sourceKey];
+    const destinationDistance = regionDistances[destinationKey];
+
+    // Debugging messages
+    console.log("Source Key:", sourceKey, "Source Distance:", sourceDistance);
+    console.log("Destination Key:", destinationKey, "Destination Distance:", destinationDistance);
+
+    // Validate distances
+    if (sourceDistance === undefined || destinationDistance === undefined) {
+        return "Invalid source or destination.";
     }
 
-    // const sourceDistance = regionDistances[source]; 
-    // const destinationDistance = regionDistances[destination];
     const distance = Math.abs(destinationDistance - sourceDistance);
-
     return baseRate + (distance * distanceFactor);
 };
+
 
 
   const intentMap = new Map();
