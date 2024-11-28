@@ -139,20 +139,29 @@ app.post('/webhook', (req, res) => {
     agent.add("I'm not sure how to handle that request.");
   };
 
-  const calculateShippingCost = (source, destination) => {
+  const calculateShippingCost = (source, destination) => { 
     const baseRate = 10; 
     const distanceFactor = 5; 
     const regionDistances = {
-      "chennai": 30,     
-      "miami": 90, 
-      "dubai": 53,     
-      "mumbai": 154 
+        "chennai": 30,     
+        "miami": 90, 
+        "dubai": 53,     
+        "mumbai": 154,
+        "goa": 36
     };
-    const sourceDistance = regionDistances[source] || 0; 
-    const destinationDistance = regionDistances[destination] || 0;
+    
+    // Ensure both source and destination are valid
+    if (!regionDistances[source] || !regionDistances[destination]) {
+        return "Invalid source or destination";
+    }
+
+    const sourceDistance = regionDistances[source]; 
+    const destinationDistance = regionDistances[destination];
     const distance = Math.abs(destinationDistance - sourceDistance);
+
     return baseRate + (distance * distanceFactor);
-  };
+};
+
 
   const intentMap = new Map();
   intentMap.set('Track', handleTrackService);
