@@ -157,8 +157,8 @@ app.post('/webhook', (req, res) => {
         return "Invalid source or destination";
     }
 
-    const sourceDistance = regionDistances[source]; 
-    const destinationDistance = regionDistances[destination];
+    // const sourceDistance = regionDistances[source]; 
+    // const destinationDistance = regionDistances[destination];
     const distance = Math.abs(destinationDistance - sourceDistance);
 
     return baseRate + (distance * distanceFactor);
