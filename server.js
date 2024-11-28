@@ -140,6 +140,7 @@ app.post('/webhook', (req, res) => {
   };
 
   const calculateShippingCost = (source, destination) => { 
+    
     const baseRate = 10; 
     const distanceFactor = 5; 
     const regionDistances = {
@@ -149,7 +150,8 @@ app.post('/webhook', (req, res) => {
         "mumbai": 154,
         "goa": 36
     };
-    
+    const sourceDistance = regionDistances[source.toLowerCase()];
+    const destinationDistance = regionDistances[destination.toLowerCase()];
     // Ensure both source and destination are valid
     if (!regionDistances[source] || !regionDistances[destination]) {
         return "Invalid source or destination";
