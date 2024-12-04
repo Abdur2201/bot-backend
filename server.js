@@ -55,11 +55,6 @@ app.post('/webhook', (req, res) => {
   // const userId = req.headers['user-id'] || "unknown-user";
   // console.log("Resolved user ID:", userId);
   
-
-  const sendWelcomeMessage = (agent) => {
-    agent.add("Welcome to the chatbot of Newage! How can I assist you today?");
-  };
-  
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
@@ -72,10 +67,8 @@ app.post('/webhook', (req, res) => {
   const handleDownloadReceipt = (agent) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
-      const fileID='179HAnBdIHafuqLKA3mfhiQdHseg21I9N';
-      const downloadLink=`https://drive.google.com/uc?export=download&id=${fileID}`;
-      //const downloadLink = `https://www.google.com`;
-      agent.add(`Here is the download link for receipt:[Download PDF](${downloadLink}) `);
+      const downloadLink = `https://www.google.com`;
+      agent.add(`Here is the download link for receipt:${downloadLink}`);
     } else {
       agent.add("Please provide a valid ID number to download the receipt.");
     }
