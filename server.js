@@ -56,6 +56,10 @@ app.post('/webhook', (req, res) => {
   // console.log("Resolved user ID:", userId);
   
 
+  const sendWelcomeMessage = (agent) => {
+    agent.add("Welcome to the chatbot of Newage! How can I assist you today?");
+  };
+  
   const handleTrackService = (agent) => {
     const idNum = agent.parameters.id_num;
     if (userId) {
