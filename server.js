@@ -139,7 +139,7 @@ app.post('/webhook', (req, res) => {
     const distanceFactor = 5; 
     const regionDistances = {
         "chennai": 30,     
-        "miami": 90, 
+        "miami": 353, 
         "dubai": 53,     
         "mumbai": 154,
         "goa": 36
