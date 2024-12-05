@@ -79,7 +79,7 @@ app.post('/webhook', (req, res) => {
     const destination = agent.parameters.des_name;
     if (source && destination) {
       const estimatedCost = calculateShippingCost(source, destination);
-      agent.add(`The estimated cost to ship from ${source} to ${destination} is $${estimatedCost}.`);
+      agent.add(`The estimated cost for shipment from ${source} to ${destination} is $${estimatedCost}.`);
     } else {
       if(!source)
       {
