@@ -4,9 +4,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { authroutes } from './authroutes.js';
 import dotenv from 'dotenv';
-import { WebhookClient } from 'dialogflow-fulfillment';
+import { WebhookClient,Card } from 'dialogflow-fulfillment';
 import nodemailer from 'nodemailer';
-
 dotenv.config();
 
 const app = express();
@@ -68,7 +67,13 @@ app.post('/webhook', (req, res) => {
     const idNum = agent.parameters.id_num;
     if (idNum) {
       const downloadLink = `https://www.google.com`;
-      agent.add(`Here is the download link for receipt:    ${downloadLink}`);
+      // agent.add(`Here is the download link for receipt: ${downloadLink}`);
+      agent.add(new Card({
+    title: "Download Receipt",
+    buttonText: "Click Here",
+    buttonUrl: downloadLink
+}));
+
     } else {
       agent.add("Please provide a valid ID number to download the receipt.");
     }
